@@ -1,0 +1,21 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+
+# Local env files
+.env
+
+# VS Code
+.vscode/
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
