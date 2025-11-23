@@ -1,0 +1,46 @@
+
+name: Build and Deploy Angular App to Azure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Build Angular app
+      - name: Build Angular app
+        run: npm run build --prod
+
+      # 5. Upload build artifacts (optional)
+      - name: Archive production build
+        uses: actions/upload-artifact@v3
+        with:
+          name: angular-dist
+          path: dist/
+
+      # 6. Deploy to Azure Web App
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: "azure_capstone_project"
+          slot-name: "production"
+          publish-profile: ${{ secrets.AZUREAPPSECRET}}
+          package: "C:/Users/shejal/Desktop/Azure_Cloud_Training/capstone_project/app/angular-app/dist/angular-app"
