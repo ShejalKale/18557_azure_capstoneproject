@@ -11,32 +11,27 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: app/angular-app  # <-- Set working directory to Angular app folder
+        working-directory: app/angular-app
 
     steps:
-      # 1. Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      # 3. Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4. Build Angular app
       - name: Build Angular app
         run: npm run build --prod
 
-      # 5. Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
-          app-name: "azure_capstone_project"
+          app-name: "azure-capstone-app"
           slot-name: "production"
           publish-profile: ${{ secrets.AZUREAPPSECRET }}
-          package: "app/angular-app/dist/angular-app"  # <-- Relative path to build output
+          package: "app/angular-app/dist/angular-app"
