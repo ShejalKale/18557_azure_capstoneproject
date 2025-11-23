@@ -9,6 +9,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/angular-app  # <-- Set working directory to Angular app folder
 
     steps:
       # 1. Checkout code
@@ -29,18 +32,11 @@ jobs:
       - name: Build Angular app
         run: npm run build --prod
 
-      # 5. Upload build artifacts (optional)
-      - name: Archive production build
-        uses: actions/upload-artifact@v4
-        with:
-          name: angular-dist
-          path: dist/
-
-      # 6. Deploy to Azure Web App
+      # 5. Deploy to Azure Web App
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v2
         with:
           app-name: "azure_capstone_project"
           slot-name: "production"
-          publish-profile: ${{ secrets.AZUREAPPSECRET}}
-          package: "C:/Users/shejal/Desktop/Azure_Cloud_Training/capstone_project/app/angular-app/dist/angular-app"
+          publish-profile: ${{ secrets.AZUREAPPSECRET }}
+          package: "app/angular-app/dist/angular-app"  # <-- Relative path to build output
